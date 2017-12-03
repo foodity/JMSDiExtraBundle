@@ -193,7 +193,11 @@ class PatternFinder
         $isWindows = 0 === stripos(PHP_OS, 'win');
         $execAvailable = function_exists('exec');
 
-        if (!$isWindows && $execAvailable && !$disableGrep && self::$grepPath = $finder->find('grep')) {
+        if (!$isWindows
+            && $execAvailable
+            && !$disableGrep
+            && ((self::$grepPath = @exec('which grep')) || (self::$grepPath = $finder->find('grep')))
+        ) {
             self::$method = self::METHOD_GREP;
         } elseif ($isWindows && $execAvailable) {
             @exec('cd', $lines, $exitCode);
